@@ -1,0 +1,38 @@
+{
+    "name": "libxmljs-dom",
+    "version": "0.0.1",
+    "description": "DOM wrapper for libxmljs",
+    "keywords": [
+        "dom",
+        "libxml",
+        "libxmljs",
+        "parser"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rc0x03/node-libxmljs-dom.git"
+    },
+    "author": {
+        "name": "rc0x03",
+        "email": "noreply@inbox.com"
+    },
+    "dependencies": {
+        "libxmljs": ">=0.14.0"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://raw.github.com/senchalabs/connect/master/LICENSE"
+        }
+    ],
+    "main": "index",
+    "engines": {
+        "node": ">= 0.8.0"
+    },
+    "readmeFilename": "Readme.md",
+    "bugs": {
+        "url": "https://github.com/rc0x03/node-libxmljs-dom/issues"
+    },
+    "_id": "node-libxmljs-dom@0.0.1",
+    "_from": "node-libxmljs-dom@"
+}
