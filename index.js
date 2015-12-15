@@ -1,9 +1,6 @@
+'use strict';
 var libxmljs    = require('libxmljs');
 var css2xpath   = require('./lib/css2xpath.js');
-
-libxmljs.request = function(opts) {
-
-}
 
 libxmljs.css2xpath = css2xpath;
 
