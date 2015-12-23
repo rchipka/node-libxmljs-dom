@@ -15,6 +15,16 @@ function qsa(selector) {
     return res;
 }
 
+module.exports.after = function(assert) {
+    assert.ok(qsa('.items-2 li:first:after(.items-1)').length === 1 && text === 'first');
+    assert.done();
+}
+
+module.exports.after_sibling = function(assert) {
+    assert.ok(qsa('li:contains("last"):after-sibling(:contains("first"))').length === 1 && text === 'last');
+    assert.done();
+}
+
 module.exports.attributes = function(assert) {
     assert.ok(qsa('[only]').length === 1);
     assert.ok(qsa('[only="true"]').length === 1);
@@ -27,6 +37,16 @@ module.exports.attributes = function(assert) {
     assert.ok(qsa('[spaces~="t s"]').length === 0);
     assert.ok(qsa('[dashes|="first"]').length === 1);
     assert.ok(qsa('ul/@class').length === qsa('ul').length)
+    assert.done();
+}
+
+module.exports.before = function(assert) {
+    assert.ok(qsa('#only:before(.items-2)').length === 1 && text === 'only');
+    assert.done();
+}
+
+module.exports.before_sibling = function(assert) {
+    assert.ok(qsa('li:contains("first"):before-sibling(:contains("last"))').length === 1 && text === 'first');
     assert.done();
 }
 
@@ -82,9 +102,21 @@ module.exports.has = function(assert) {
     assert.done();
 }
 
-module.exports.has_preceding_sibling = function(assert) {
-    assert.ok(qsa('li:contains("last"):has-preceding-sibling(li:contains("first"))').length === 1 && text === 'last');
-    assert.ok(qsa('li:contains("last"):has-preceding-sibling(li:contains("last"))').length === 0);
+module.exports.has_ancestor = function(assert) {
+    assert.ok(qsa('li:contains("last"):has-parent(ul):has-ancestor(body)').length === 1 && text === 'last');
+    assert.ok(qsa('li:contains("last"):has-ancestor(none)').length === 0);
+    assert.done();
+}
+
+module.exports.has_parent = function(assert) {
+    assert.ok(qsa('li:contains("last"):has-parent(ul)').length === 1 && text === 'last');
+    assert.ok(qsa('li:contains("last"):has-parent(body)').length === 0);
+    assert.done();
+}
+
+module.exports.has_sibling = function(assert) {
+    assert.ok(qsa('li:contains("last"):has-sibling(li:contains("first"))').length === 1 && text === 'last');
+    assert.ok(qsa('li:contains("last"):has-sibling(li:contains("last"))').length === 0);
     assert.done();
 }
 

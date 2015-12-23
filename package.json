@@ -1,6 +1,6 @@
 {
     "name": "libxmljs-dom",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "DOM wrapper for libxmljs",
     "keywords": [
         "dom",
@@ -43,6 +43,6 @@
     "bugs": {
         "url": "https://github.com/rc0x03/node-libxmljs-dom/issues"
     },
-    "_id": "node-libxmljs-dom@0.0.2",
+    "_id": "node-libxmljs-dom@0.0.3",
     "_from": "node-libxmljs-dom@"
 }
