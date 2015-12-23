@@ -2,6 +2,10 @@
 
 A simple DOM wrapper for libxmljs.
 
+[![NPM](https://nodei.co/npm/libxmljs-dom.png)](https://www.npmjs.com/package/libxmljs-dom)
+
+[![Build Status](https://travis-ci.org/rc0x03/node-libxmljs-dom.svg)](https://travis-ci.org/rc0x03/node-libxmljs-dom)
+
 ##Install
 
 ```
