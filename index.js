@@ -44,4 +44,18 @@ function extend(parent, child, enumerable) {
     return parent;
 }
 
+var readFileSync = require('fs').readFileSync;
+var jQueryFile = __dirname+'/lib/jquery.js';
+var jQuery = null;
+Object.defineProperty(libxmljs, 'jQuery', {
+    get: function() {
+        if (jQuery === null)
+            jQuery = readFileSync(jQueryFile).toString();
+        return jQuery;
+    },
+    set: function(val) {
+
+    }
+})
+
 module.exports = libxmljs;

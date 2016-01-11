@@ -7,7 +7,7 @@ doc.location = 'http://example.com/test/testing?test=true';
 var text = null;
 function qsa(selector) {
     var res = doc.querySelectorAll(selector);
-    if (res.length === 1) {
+    if (res.length === 1 && res[0].text !== undefined) {
         text = res[0].text();
     }else{
         text = null;
@@ -28,7 +28,11 @@ module.exports.after_sibling = function(assert) {
 module.exports.attributes = function(assert) {
     assert.ok(qsa('[only]').length === 1);
     assert.ok(qsa('[only="true"]').length === 1);
+    assert.ok(qsa('[only = "true"]').length === 1);
+    assert.ok(qsa('[only = true]').length === 1);
     assert.ok(qsa('[only*="ru"]').length === 1);
+    assert.ok(qsa('[only*= "ru"]').length === 1);
+    assert.ok(qsa('[only *= ru]').length === 1);
     assert.ok(qsa('[only^="tr"]').length === 1);
     assert.ok(qsa('[only$="ue"]').length === 1);
     assert.ok(qsa('.items-2 > li[items-2!="first"]').length === 1);
@@ -36,12 +40,15 @@ module.exports.attributes = function(assert) {
     assert.ok(qsa('[spaces~="second"]').length === 1);
     assert.ok(qsa('[spaces~="t s"]').length === 0);
     assert.ok(qsa('[dashes|="first"]').length === 1);
-    assert.ok(qsa('ul/@class').length === qsa('ul').length)
+    assert.ok(qsa('ul/@class').length === qsa('ul').length);
+    assert.ok(qsa('ul [id=only]').length === 1);
+    assert.ok(qsa('.items-1 @id').length === 1);
     assert.done();
 }
 
 module.exports.before = function(assert) {
     assert.ok(qsa('#only:before(.items-2)').length === 1 && text === 'only');
+    assert.ok(qsa('li:before(li:contains("last")):contains("first")').length === 1 && text === 'first');
     assert.done();
 }
 
@@ -52,6 +59,14 @@ module.exports.before_sibling = function(assert) {
 
 module.exports.checked = function(assert) {
     assert.ok(qsa('input:checked').length === 1);
+    assert.done();
+}
+
+module.exports.class = function(assert) {
+    assert.ok(qsa('.empty').length === 1);
+    assert.ok(qsa('.empty.items-0').length === 1);
+    assert.ok(qsa('div.empty.items-0').length === 1);
+    assert.ok(qsa('.items-1 .only').length === 1);
     assert.done();
 }
 
@@ -92,6 +107,13 @@ module.exports.external = function(assert) {
     assert.done();
 }
 
+module.exports.first = function(assert) {
+    assert.ok(qsa('.items-2 li:first').length === 1 && text === 'first');
+    assert.ok(qsa('.items-2 li:first(2):limit(2)').length === 2);
+    assert.ok(qsa('.items-2 li:first(3)').length === 2);
+    assert.done();
+}
+
 module.exports.first_child = function(assert) {
     assert.ok(qsa('.items-2 li:first-child').length === 1 && text === 'first');
     assert.done();
@@ -99,6 +121,7 @@ module.exports.first_child = function(assert) {
 
 module.exports.has = function(assert) {
     assert.ok(qsa('ul:has(#only[only="true"])').length === 1);
+    assert.ok(qsa('ul:has(li:contains("second")):has((li:contains("first"), li:contains("third")))').length === 1);
     assert.done();
 }
 
@@ -120,13 +143,20 @@ module.exports.has_sibling = function(assert) {
     assert.done();
 }
 
-module.exports.ids = function(assert) {
+module.exports.id = function(assert) {
     assert.ok(qsa('#only').length === 1);
     assert.done();
 }
 
 module.exports.internal = function(assert) {
     assert.ok(qsa('a:internal').length === qsa('a').length-qsa('a:external').length);
+    assert.done();
+}
+
+module.exports.last = function(assert) {
+    assert.ok(qsa('.items-2 li:last').length === 1 && text === 'last');
+    assert.ok(qsa('.items-2 li:last(2)').length === 2);
+    assert.ok(qsa('.items-2 li:last(3)').length === 2);
     assert.done();
 }
 
@@ -138,7 +168,7 @@ module.exports.last_child = function(assert) {
 module.exports.not = function(assert) {
     assert.ok(qsa('#only:not(#only)').length === 0);
     assert.ok(qsa(':not(#only)').length > 1);
-    assert.ok(qsa('li:istarts-with("Fir"):not(:icontains("LAST")):icontains("ST")').length > 1);
+    assert.ok(qsa('li:istarts-with("Fir"):not(:icontains("LAST"):not(@nope)):icontains("ST")').length > 1);
     assert.done();
 }
 
@@ -222,5 +252,14 @@ module.exports.skip_last = function(assert) {
 module.exports.starts_with = function(assert) {
     assert.ok(qsa('.items-2 li:starts-with("fir")').length === 1 && text == 'first');
     assert.ok(qsa('.items-2 li:istarts-with("FIR")').length === 1 && text == 'first');
+    assert.done();
+}
+
+module.exports.xpath = function(assert) {
+    assert.ok(qsa('//form/input[@checked]').length === 1);
+    assert.ok(qsa('//ul.items-1|//ul.items-2').length === 2);
+    assert.ok(qsa('//ul.items-2:range(0, 1):has(//li)/li[items-2 = "first" or @items-2 = "last"]').length === 2);
+    assert.ok(qsa('//ul.items-2/li[position() > 1 and position() <= 2]:first:limit(1)').length === 1);
+    assert.ok(qsa('/html/body/form/ancestor::html/child::body a:has-parent(body):first(1)[@href != "" and not(@target)]').length > 0);
     assert.done();
 }
