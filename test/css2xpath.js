@@ -15,6 +15,12 @@ function qsa(selector) {
     return res;
 }
 
+module.exports.adjacent_sibling = function(assert) {
+    assert.ok(qsa('ul.items-1 + ul').length === qsa('ul').length-1);
+    assert.ok(qsa('ul.items-1:first')[0].querySelectorAll('+ ul.items-2').length === 1);
+    assert.done();
+}
+
 module.exports.after = function(assert) {
     assert.ok(qsa('.items-2 li:first:after(.items-1)').length === 1 && text === 'first');
     assert.done();
@@ -49,6 +55,7 @@ module.exports.attributes = function(assert) {
 module.exports.before = function(assert) {
     assert.ok(qsa('#only:before(.items-2)').length === 1 && text === 'only');
     assert.ok(qsa('li:before(li:contains("last")):contains("first")').length === 1 && text === 'first');
+    assert.ok(qsa('li:before([@items-2 = "last"]):contains("first")').length === 1 && text === 'first');
     assert.done();
 }
 
@@ -108,6 +115,7 @@ module.exports.external = function(assert) {
 }
 
 module.exports.first = function(assert) {
+    assert.ok(qsa('li:first').length === qsa('ul').length);
     assert.ok(qsa('.items-2 li:first').length === 1 && text === 'first');
     assert.ok(qsa('.items-2 li:first(2):limit(2)').length === 2);
     assert.ok(qsa('.items-2 li:first(3)').length === 2);
@@ -119,8 +127,15 @@ module.exports.first_child = function(assert) {
     assert.done();
 }
 
+
+module.exports.general_sibling = function(assert) {
+    assert.ok(qsa('.items-3 > li ~ li').length === 2);
+    assert.done();
+}
+
 module.exports.has = function(assert) {
     assert.ok(qsa('ul:has(#only[only="true"])').length === 1);
+    assert.ok(qsa('ul:has(li:contains("first") + li:contains("second"))').length === 1);
     assert.ok(qsa('ul:has(li:contains("second")):has((li:contains("first"), li:contains("third")))').length === 1);
     assert.done();
 }
@@ -154,7 +169,7 @@ module.exports.internal = function(assert) {
 }
 
 module.exports.last = function(assert) {
-    assert.ok(qsa('.items-2 li:last').length === 1 && text === 'last');
+    assert.ok(qsa('li:last').length === qsa('ul').length);
     assert.ok(qsa('.items-2 li:last(2)').length === 2);
     assert.ok(qsa('.items-2 li:last(3)').length === 2);
     assert.done();
@@ -219,6 +234,11 @@ module.exports.only_child = function(assert) {
     assert.done();
 }
 
+module.exports.only_of_type = function(assert) {
+    assert.ok(qsa('li:only-of-type').length === 1 && text === 'only');
+    assert.done();
+}
+
 module.exports.path = function(assert) {
     assert.ok(qsa('a:path("/test/page")').length === 1);
     assert.done();
@@ -233,6 +253,11 @@ module.exports.protocol = function(assert) {
 module.exports.range = function(assert) {
     assert.ok(qsa('.items-2 li:range(1, 3)').length === 2);
     assert.ok(qsa('.items-3 li:range(2, 3)').length === 2);
+    assert.done();
+}
+
+module.exports.root = function(assert) {
+    assert.ok(qsa('.items-2:root')[0] === doc.root());
     assert.done();
 }
 
@@ -260,6 +285,6 @@ module.exports.xpath = function(assert) {
     assert.ok(qsa('//ul.items-1|//ul.items-2').length === 2);
     assert.ok(qsa('//ul.items-2:range(0, 1):has(//li)/li[items-2 = "first" or @items-2 = "last"]').length === 2);
     assert.ok(qsa('//ul.items-2/li[position() > 1 and position() <= 2]:first:limit(1)').length === 1);
-    assert.ok(qsa('/html/body/form/ancestor::html/child::body a:has-parent(body):first(1)[@href != "" and not(@target)]').length > 0);
+    assert.ok(qsa('/html/body/form/ancestor::html/child::body a:has-parent(body):first(1)[@href != "" and not(@target)]').length === 1);
     assert.done();
 }
