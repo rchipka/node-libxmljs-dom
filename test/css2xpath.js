@@ -16,7 +16,10 @@ function qsa(selector) {
 }
 
 module.exports.adjacent_sibling = function(assert) {
-    assert.ok(qsa('ul.items-1 + ul').length === qsa('ul').length-1);
+    assert.ok(qsa('ul.items-1 + ul').length === 1);
+    assert.ok(qsa('ul.items-3 > li + li').length === 2);
+    assert.ok(qsa('ul + b').length === 2);
+    assert.ok(qsa('a + a').length === qsa('a').length-1);
     assert.ok(qsa('ul.items-1:first')[0].querySelectorAll('+ ul.items-2').length === 1);
     assert.done();
 }
@@ -90,8 +93,8 @@ module.exports.domain = function(assert) {
 }
 
 module.exports.empty = function(assert) {
-    assert.ok(qsa('img:empty').length === 1);
-    assert.ok(qsa('div:empty').length === 1);
+    assert.ok(qsa('img:empty').length === qsa('img').length);
+    assert.ok(qsa('div.empty:empty').length === 1);
     assert.ok(qsa('ul:empty').length === 0);
     assert.done();
 }
@@ -129,7 +132,8 @@ module.exports.first_child = function(assert) {
 
 
 module.exports.general_sibling = function(assert) {
-    assert.ok(qsa('.items-3 > li ~ li').length === 2);
+    assert.ok(qsa('ul ~ b').length === 3);
+    assert.ok(qsa('ul ~ div').length === 2);
     assert.done();
 }
 
