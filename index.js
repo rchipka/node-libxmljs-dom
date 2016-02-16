@@ -29,7 +29,7 @@ extend(XMLElement, Element);
 extend(XMLElement, EventTarget);
 
 var Document = extend(require('./lib/Document.js')(libxmljs), Node, true);
-extend(XMLDocument, Document)
+extend(XMLDocument, Document);
 extend(XMLDocument, EventTarget);
 
 function extend(parent, child, enumerable) {

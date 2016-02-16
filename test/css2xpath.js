@@ -52,6 +52,7 @@ module.exports.attributes = function(assert) {
     assert.ok(qsa('ul/@class').length === qsa('ul').length);
     assert.ok(qsa('ul [id=only]').length === 1);
     assert.ok(qsa('.items-1 @id').length === 1);
+    assert.ok(qsa('.items-1 li@id').length === 1);
     assert.done();
 }
 
@@ -72,7 +73,7 @@ module.exports.checked = function(assert) {
     assert.done();
 }
 
-module.exports.class = function(assert) {
+module.exports.classes = function(assert) {
     assert.ok(qsa('.empty').length === 1);
     assert.ok(qsa('.empty.items-0').length === 1);
     assert.ok(qsa('div.empty.items-0').length === 1);
@@ -118,7 +119,7 @@ module.exports.external = function(assert) {
 }
 
 module.exports.first = function(assert) {
-    assert.ok(qsa('li:first').length === qsa('ul').length);
+    assert.ok(qsa('li:first').length === 1);
     assert.ok(qsa('.items-2 li:first').length === 1 && text === 'first');
     assert.ok(qsa('.items-2 li:first(2):limit(2)').length === 2);
     assert.ok(qsa('.items-2 li:first(3)').length === 2);
@@ -130,10 +131,15 @@ module.exports.first_child = function(assert) {
     assert.done();
 }
 
-
 module.exports.general_sibling = function(assert) {
     assert.ok(qsa('ul ~ b').length === 3);
     assert.ok(qsa('ul ~ div').length === 2);
+    assert.done();
+}
+
+module.exports.gt_lt = function(assert) {
+    assert.ok(qsa('.items-2 > li:gt(0)').length === 1);
+    assert.ok(qsa('.items-2 > li:lt(1)').length === 1);
     assert.done();
 }
 
@@ -162,8 +168,13 @@ module.exports.has_sibling = function(assert) {
     assert.done();
 }
 
-module.exports.id = function(assert) {
+module.exports.ids = function(assert) {
     assert.ok(qsa('#only').length === 1);
+    assert.done();
+}
+
+module.exports.input = function(assert) {
+    assert.ok(qsa(':input').length === qsa('input, button, select, textarea').length);
     assert.done();
 }
 
@@ -173,7 +184,7 @@ module.exports.internal = function(assert) {
 }
 
 module.exports.last = function(assert) {
-    assert.ok(qsa('li:last').length === qsa('ul').length);
+    assert.ok(qsa('li:last').length === 1);
     assert.ok(qsa('.items-2 li:last(2)').length === 2);
     assert.ok(qsa('.items-2 li:last(3)').length === 2);
     assert.done();
@@ -187,7 +198,14 @@ module.exports.last_child = function(assert) {
 module.exports.not = function(assert) {
     assert.ok(qsa('#only:not(#only)').length === 0);
     assert.ok(qsa(':not(#only)').length > 1);
+    assert.ok(qsa('ul > :first-child:not(a)').length > 0);
     assert.ok(qsa('li:istarts-with("Fir"):not(:icontains("LAST"):not(@nope)):icontains("ST")').length > 1);
+    assert.done();
+}
+
+module.exports.nth = function(assert) {
+    assert.ok(qsa('.items-1 > li:nth(0)#only').length === 1);
+    assert.ok(qsa('.items-1 > li:eq(0)#only').length === 1);
     assert.done();
 }
 
@@ -260,8 +278,21 @@ module.exports.range = function(assert) {
     assert.done();
 }
 
+module.exports.reverse_combinators = function(assert) {
+    assert.ok(qsa('li ! .items-2').length === 1);
+    assert.ok(qsa('li !> .items-2').length === 1);
+    assert.ok(qsa('ul.items-2 !+ ul.items-1').length === 1);
+    assert.ok(qsa('.items-3 !~ .items-1').length === 1);
+    assert.done();
+}
+
 module.exports.root = function(assert) {
     assert.ok(qsa('.items-2:root')[0] === doc.root());
+    assert.done();
+}
+
+module.exports.selected = function(assert) {
+    assert.ok(qsa(':selected').length === 1);
     assert.done();
 }
 
@@ -287,8 +318,13 @@ module.exports.starts_with = function(assert) {
 module.exports.xpath = function(assert) {
     assert.ok(qsa('//form/input[@checked]').length === 1);
     assert.ok(qsa('//ul.items-1|//ul.items-2').length === 2);
-    assert.ok(qsa('//ul.items-2:range(0, 1):has(//li)/li[items-2 = "first" or @items-2 = "last"]').length === 2);
+    assert.ok(qsa('//ul.items-2:range(0, 1):has(//li)/li[@items-2 = "first" or @items-2 = "last"]').length === 2);
     assert.ok(qsa('//ul.items-2/li[position() > 1 and position() <= 2]:first:limit(1)').length === 1);
     assert.ok(qsa('/html/body/form/ancestor::html/child::body a:has-parent(body):first(1)[@href != "" and not(@target)]').length === 1);
+    assert.ok(qsa('child::body').length === 1);
+    assert.ok(qsa('child::body text()').length > 0);
+    assert.ok(qsa('.items-2 > li + node()').length === 1);
+    assert.ok(qsa('child::*').length > 0);
+    assert.ok(qsa('*').length > 0);
     assert.done();
 }
