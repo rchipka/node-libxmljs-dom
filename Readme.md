@@ -16,6 +16,11 @@ npm install libxmljs-dom
 
 For documentation and examples check out [https://github.com/rc0x03/node-libxmljs-dom/wiki](https://github.com/rc0x03/node-libxmljs-dom/wiki)
 
+##Contribute
+
+This package needs comprehensive test coverage to ensure standards compliance.
+Please include [compliance tests](https://dom.spec.whatwg.org/) for any added functionality.
+
 ##Dependencies
 
 - [libxmljs](https://github.com/polotek/libxmljs) - libxml C bindings
