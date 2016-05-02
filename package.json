@@ -29,12 +29,7 @@
     "scripts": {
         "test": "node ./node_modules/.bin/nodeunit test"
     },
-    "licenses": [
-        {
-            "type": "MIT",
-            "url": "https://raw.github.com/senchalabs/connect/master/LICENSE"
-        }
-    ],
+    "license": "MIT",
     "main": "index",
     "engines": {
         "node": ">= 0.8.0"
