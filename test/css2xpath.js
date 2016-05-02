@@ -83,6 +83,9 @@ module.exports.classes = function(assert) {
 
 module.exports.contains = function(assert) {
     assert.ok(qsa('li:contains("only")').length === 1);
+    assert.ok(qsa('option:contains("Option 1")').length === 1);
+    assert.ok(qsa('option:contains("option 1")').length === 0);
+    assert.ok(qsa('option:icontains("option 1")').length === 1);
     assert.ok(qsa('li:contains("first") + li:contains("last")').length === 1);
     assert.done();
 }
@@ -134,6 +137,8 @@ module.exports.first_child = function(assert) {
 module.exports.general_sibling = function(assert) {
     assert.ok(qsa('ul ~ b').length === 3);
     assert.ok(qsa('ul ~ div').length === 2);
+    assert.ok(doc.querySelector('.items-3 > li[1]').querySelectorAll('~').length === 2);
+    assert.ok(doc.querySelector('.items-3 > li[1]').querySelectorAll('~ li').length === 2);
     assert.done();
 }
 
@@ -283,6 +288,10 @@ module.exports.reverse_combinators = function(assert) {
     assert.ok(qsa('li !> .items-2').length === 1);
     assert.ok(qsa('ul.items-2 !+ ul.items-1').length === 1);
     assert.ok(qsa('.items-3 !~ .items-1').length === 1);
+    assert.ok(qsa('.items-3 ^').length === 1 && text === 'first');
+    assert.ok(qsa('.items-3 !^').length === 1 && text === 'third');
+    assert.ok(qsa('.items-3 ^ li').length === 1 && text === 'first');
+    assert.ok(qsa('.items-3 !^ li').length === 1 && text === 'third');
     assert.done();
 }
 

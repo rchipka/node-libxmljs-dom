@@ -1,6 +1,6 @@
 {
     "name": "libxmljs-dom",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "DOM wrapper for libxmljs",
     "keywords": [
         "dom",
@@ -13,11 +13,11 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/rc0x03/node-libxmljs-dom.git"
+        "url": "https://github.com/rchipka/node-libxmljs-dom.git"
     },
     "author": {
-        "name": "rc0x03",
-        "email": "noreply@inbox.com"
+        "name": "rchipka",
+        "email": "chipka01@email.franklin.edu"
     },
     "dependencies": {
         "needle": ">=0.9.2",
@@ -41,6 +41,6 @@
     },
     "readmeFilename": "Readme.md",
     "bugs": {
-        "url": "https://github.com/rc0x03/node-libxmljs-dom/issues"
+        "url": "https://github.com/rchipka/node-libxmljs-dom/issues"
     }
 }

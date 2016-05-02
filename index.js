@@ -21,19 +21,21 @@ XMLElement.css2xpath    = libxmljs.css2xpath;
 XMLElement.__childNodes = XMLElement.childNodes;
 XMLElement.__nextSibling = XMLElement.nextSibling;
 XMLElement.__name = XMLElement.name;
+XMLElement.__type = XMLElement.type;
 delete XMLElement.childNodes;
 
 var Node = require('./lib/Node.js');
 var Element = extend(require('./lib/Element.js'), Node, true);
-extend(XMLElement, Element);
+extend(XMLElement, Element, true);
 extend(XMLElement, EventTarget);
 
 var Document = extend(require('./lib/Document.js')(libxmljs), Node, true);
-extend(XMLDocument, Document);
+extend(XMLDocument, Document, true);
 extend(XMLDocument, EventTarget);
 
-function extend(parent, child, enumerable) {
+function extend(parent, child, replace) {
     for (var key in child) {
+        if (parent.hasOwnProperty(key) && replace !== true) continue;
         var desc = Object.getOwnPropertyDescriptor(child, key);
         if (desc.value !== undefined) {
             parent[key] = child[key];
